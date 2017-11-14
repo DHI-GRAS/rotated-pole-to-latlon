@@ -20,7 +20,7 @@ TIME_ENCODING = {
     'dtype': 'float64'}
 
 
-def unrotate_ds(ds, actually_rotate=False):
+def unrotate_ds(ds, shift_lon=False):
     """Convert Dataset from roated-pole (lon only) to regular lat/lon"""
     try:
         rp = ds['rotated_pole']
@@ -32,7 +32,7 @@ def unrotate_ds(ds, actually_rotate=False):
 
     # rotate longitudes
     dsnew = ds.rename(TO_RENAME).drop('rotated_pole')
-    if actually_rotate:
+    if shift_lon:
         dsnew.coords['lon'] = ds['rlon'] + lon_offset
         dsnew = dsnew.swap_dims({'rlon': 'lon'}).drop('rlon')
 
@@ -45,10 +45,10 @@ def unrotate_ds(ds, actually_rotate=False):
     return dsnew
 
 
-def unrotate_netcdf(infile, outfile):
+def unrotate_netcdf(infile, outfile, shift_lon=False):
     """Convert netCDF file from roated-pole (lon only) to regular lat/lon"""
     ds = xr.open_dataset(infile)
-    dsnew = unrotate_ds(ds)
+    dsnew = unrotate_ds(ds, shift_lon=shift_lon)
     encoding = {}
     if 'time' in dsnew:
         encoding.update(time=TIME_ENCODING)
