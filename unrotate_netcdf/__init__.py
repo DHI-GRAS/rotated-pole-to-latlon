@@ -14,6 +14,11 @@ TO_RENAME = {
     'rlat': 'lat',
     'rlon': 'lon'}
 
+TIME_ENCODING = {
+    'units':  'seconds since 1970-01-01 00:00:00',
+    'calendar': 'standard',
+    'dtype': 'float64'}
+
 
 def unrotate_ds(ds):
     """Convert Dataset from roated-pole (lon only) to regular lat/lon"""
@@ -40,4 +45,7 @@ def unrotate_netcdf(infile, outfile):
     """Convert netCDF file from roated-pole (lon only) to regular lat/lon"""
     ds = xr.open_dataset(infile)
     dsnew = unrotate_ds(ds)
-    dsnew.to_netcdf(outfile)
+    encoding = {}
+    if 'time' in dsnew:
+        encoding.update(time=TIME_ENCODING)
+    dsnew.to_netcdf(outfile, encoding=encoding)
