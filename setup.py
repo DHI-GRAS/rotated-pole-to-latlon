@@ -9,7 +9,7 @@ setup(
     packages=find_packages(),
     entry_points="""
     [console_scripts]
-    unrotate_netcdf=unrotate_netcdf.scripts.unrotate_netcdf:main
+    unrotate_netcdf=unrotate_netcdf.scripts.cli:main
     """,
     install_requires=[
         'xarray'],
