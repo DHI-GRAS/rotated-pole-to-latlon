@@ -14,7 +14,7 @@ conda install xarray
 
 Then, install this package with
 ```
-pip install .
+pip install https://github.com/DHI-GRAS/rotated-pole-to-latlon/archive/master.zip
 ```
 
 ## Usage
